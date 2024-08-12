@@ -14,7 +14,7 @@ const createUser = asyncHandler(async (req, res) => {
 
     const existingUser = await User.findOne({ userId });
     if (existingUser) {
-        throw new ApiError(409, "User Already Exists");
+        throw new ApiError(400, "User Already Exists");
     }
 
     const newUser = await User.create({

@@ -11,7 +11,8 @@ app.use(express.urlencoded({extended:true,limit:"16kb"}))
 app.use(express.static("public"))
 
 import userRouter from "./routes/user.routes.js";
-
+import errorHandler from "./middlewares/error.mtddlewares.js";
+app.use(errorHandler);
 app.use('/api/v1/users',userRouter);
 app.get('/',async (req,res)=>{
     return res.json({
