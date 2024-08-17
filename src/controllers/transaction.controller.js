@@ -79,8 +79,7 @@ const recentTransactions=asyncHandler(async(req,res)=>{
                 $project:{
                     _id:0,
                     transactionId:1,
-                    sender:1,
-                    receiver:1,
+                  
                     amount:1,
                     transactionType:1,
                     createdAt:1
