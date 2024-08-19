@@ -42,6 +42,11 @@ const userSchema=new mongoose.Schema({
         min:0
 
     },
+    profileImage:{
+        type:String,
+        default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNKfj6RsyRZqO4nnWkPFrYMmgrzDmyG31pFQ&s"
+    
+    },
     refreshToken:{
         type:String
     }

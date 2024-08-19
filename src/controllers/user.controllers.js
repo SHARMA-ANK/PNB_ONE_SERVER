@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import cookie from "cookie-parser";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // Create a new user
 const createUser = asyncHandler(async (req, res) => {
@@ -16,12 +17,18 @@ const createUser = asyncHandler(async (req, res) => {
     if (existingUser) {
         throw new ApiError(400, "User Already Exists");
     }
+    const profileImageLocalPath=req.files?.profileImage[0]?.path;
+    if(!profileImage){
+        throw new ApiError(400,"Please Upload a Profile Image")
+    }
+    const profileImage=await uploadOnCloudinary(profileImageLocalPath);
 
     const newUser = await User.create({
         name,
         userId,
         password,
         accountNo,
+        profileImage:profileImage.url,
         phoneNo,
         balance
     });
@@ -78,8 +85,8 @@ const loginUser = asyncHandler(async (req, res) => {
         secure: true
     };
 
-    const createdUser = await User.findById(user._id).select("-password -refreshToken");
-
+    const createdUser = await User.findById(user._id).select("-password");
+    
     res.status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
@@ -87,8 +94,7 @@ const loginUser = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 {
-                    user: createdUser,
-                    accessToken
+                    user: createdUser
                 },
                 "User Logged In Successfully!"
             )

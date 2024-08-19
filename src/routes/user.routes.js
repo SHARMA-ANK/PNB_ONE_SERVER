@@ -4,7 +4,7 @@ import { verifyJwt } from "../middlewares/auth.middlewares.js";
 
 const userRouter=Router();
 
-userRouter.route('/register').post(createUser);
+userRouter.route('/register').post(storage,createUser);
 userRouter.route('/login').post(loginUser);
 userRouter.route('/validate').get(verifyJwt,validateUser);
 
